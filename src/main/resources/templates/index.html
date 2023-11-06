@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <base th:href="${#request.getContextPath()}">
+    <title>Index</title>
+    <link rel="stylesheet" href="static/css/index.css">
+    <script src="static/js/index.js"></script>
+</head>
+<body>
+<div class="container">
+    <form id="contact"
+          th:object="${data}"
+          method="post">
+        <h3>邮件订阅</h3>
+        <h4>24小时汇率监控</h4>
+        <fieldset>
+            <label>
+                <input id="mail"
+                       placeholder="邮箱"
+                       th:field="*{mail}"
+                       type="email"
+                       tabindex="1"
+                       autofocus/>
+            </label>
+        </fieldset>
+        <fieldset>
+            <label>
+                <input id="currency"
+                       placeholder="提醒值"
+                       th:field="*{currencyBound}"
+                       type="text"
+                       tabindex="2"/>
+            </label>
+            <p>提醒的汇率上限</p>
+            <p>按照1外币比人民币输入 如：8.34</p>
+            <p>会在汇率低于此比例发送邮件提示</p>
+            <label>
+                <span style="font-weight: bold">关注货币：</span>
+                <select id="currency-select"
+                        th:field="*{currencyName}">
+                    <option th:each="currency:${currencies}" th:text="${currency}" th:value="${currency}"></option>
+                </select>
+                <p>每次汇率提醒都会带上这个银行的汇率，就算没有达到预期以下。</p>
+            </label>
+        </fieldset>
+        <fieldset>
+            <label>
+                <span style="font-weight: bold">特别关注银行：</span>
+                <select id="bank-select"
+                        th:field="*{specialBank}">
+                    <option value=""></option>
+                    <option th:each="bank:${banks}" th:text="${bank}" th:value="${bank}"></option>
+                </select>
+                <p>每次汇率提醒都会带上这个银行的汇率，就算没有达到预期以下。</p>
+            </label>
+        </fieldset>
+        <fieldset>
+            <button id="subscribe" type="button" onclick="validSubscribe()">订阅</button>
+            <button id="update" type="button" onclick="validUpdate()"><span style="color: yellow">更新提醒值</span></button>
+            <button id="unsubscribe" type="button" onclick="unsubscribeHandler()"><span style="color: red">取消订阅</span>
+            </button>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cool.txz.cool.function.mapper.CurrencyExchangeRateNotifyMapper">
+
+    <resultMap id="BaseResultMap" type="cool.txz.cool.function.entity.CurrencyExchangeRateNotify">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+        <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
+        <result property="notifyMethodType" column="notify_method_type" jdbcType="VARCHAR"/>
+        <result property="notifyMethod" column="notify_method" jdbcType="VARCHAR"/>
+        <result property="isActivated" column="is_actived" jdbcType="TINYINT"/>
+        <result property="activatedAt" column="actived_at" jdbcType="TIMESTAMP"/>
+        <result property="activatedExpiredAt" column="actived_expired_at" jdbcType="TIMESTAMP"/>
+        <result property="notifyCurrencyCode" column="notify_currency_code" jdbcType="VARCHAR"/>
+        <result property="rateMin" column="rate_min" jdbcType="DECIMAL"/>
+        <result property="rateMax" column="rate_max" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,created_time,updated_time,
+        deleted,deleted_at,notify_method_type,
+        notify_method,is_actived,actived_at,
+        actived_expired_at,notify_currency_code,rate_min,
+        rate_max
+    </sql>
+    <update id="clearExpiredAndUnactivatedNotify">
+        update currency_exchange_rate_notify
+        set deleted    = 1,
+            deleted_at = NOW()
+        where is_activated = 0
+          and deleted = 0
+          and activated_expired_at &lt; NOW()
+    </update>
+    <update id="updateToActivatedStatus">
+        update currency_exchange_rate_notify
+        set deleted      = 0,
+            deleted_at   = null,
+            is_activated = 1,
+            actived_at   = NOW()
+        where notify_method_type = #{notifyMethodEnum}
+          and notify_method = #{notifyMethod}
+    </update>
+</mapper>

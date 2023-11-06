@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base th:href="${#request.getContextPath()}">
+    <title>Index</title>
+    <link rel="stylesheet" href="static/css/index.css">
+    <script src="static/js/index.js"></script>
+</head>
+<body>
+<div class="container">
+    <form id="contact">
+        <h3 th:text="${title}"></h3>
+        <h4 th:text="${subTitle}"></h4>
+        <fieldset>
+            <p>可以点击  <a href="/currency-notify/">这里</a></p>
+            <p>回到首页进行提醒值修改或者取消退订</p>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
